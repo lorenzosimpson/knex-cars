@@ -1,5 +1,6 @@
 const express = require('express');
 const knex = require('../data/dbConfig');
+const validateVehicle = require('../middleware/validateVehicle')
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get('/', (req, res) => {
     .catch(err => res.status(500).json({ error: 'Failed to fetch vehicles' }))
 })
 
-router.post('/', (req, res) => {
+router.post('/', validateVehicle, (req, res) => {
     knex
     .insert(req.body, 'id')
     .into('vehicles')
@@ -20,7 +21,7 @@ router.post('/', (req, res) => {
 })
 
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateVehicle, (req, res) => {
     knex('vehicles')
     .where({ id: req.params.id })
     .update(req.body)
