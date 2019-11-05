@@ -20,8 +20,21 @@ router.post('/', (req, res) => {
 })
 
 
+router.put('/:id', (req, res) => {
+    knex('vehicles')
+    .where({ id: req.params.id })
+    .update(req.body)
+    .then(updated => res.status(200).json(updated))
+    .catch(err => res.status(500).json({ error: 'Failed to update vehicle' }))
+})
 
-
+router.delete('/:id', (req, res) => {
+    knex('vehicles')
+    .where({ id: req.params.id })
+    .del()
+    .then(deleted => res.status(200).json(deleted))
+    .catch(err => res.status(500).json({ error: 'Failed to delete vehicle'}))
+})
 
 
 
